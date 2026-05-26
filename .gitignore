@@ -1,0 +1,39 @@
+# Dependencies
+backend/node_modules/
+siperpus-frontend/node_modules/
+
+# Build output
+siperpus-frontend/dist/
+siperpus-frontend/dist-ssr/
+siperpus-frontend/coverage/
+
+# Environment variables (jangan di-commit)
+backend/.env
+siperpus-frontend/.env
+*.env.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.tsbuildinfo
+.eslintcache
+test-results/
+playwright-report/
