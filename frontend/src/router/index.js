@@ -42,6 +42,12 @@ const router = createRouter({
           component: () => import('@/views/dashboard/DashboardHomeView.vue'),
           meta: { title: 'Dashboard' },
         },
+        {
+          path: 'buku/tambah',
+          name: 'tambah-buku',
+          component: () => import('@/views/dashboard/TambahBukuView.vue'),
+          meta: { title: 'Tambah Buku' },
+        },
       ],
     },
 
