@@ -1,3 +1,4 @@
+<!-- frontend/src/components/layout/DashboardLayout.vue -->
 <template>
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
@@ -29,8 +30,15 @@
           <p class="text-sm text-muted-foreground mt-1">Kelola perpustakaan secara terpusat</p>
         </div>
 
-        <!-- Child routes dirender di sini -->
-        <RouterView />
+        <!--
+          KeepAlive: cache halaman yang sering dikunjungi
+          include: daftar nama komponen yang di-cache
+          max: maksimal 5 komponen di-cache sekaligus
+          (komponen tertua akan di-evict jika melebihi max)
+        -->
+        <KeepAlive :include="cachedViews" :max="5">
+          <RouterView :key="route.fullPath" />
+        </KeepAlive>
       </div>
     </main>
   </div>
@@ -43,11 +51,15 @@ import { LayoutDashboard, BookOpen, Users, BookMarked, BarChart3 } from 'lucide-
 const route = useRoute()
 const router = useRouter()
 
+// Daftar komponen yang akan di-cache oleh KeepAlive
+// Nama harus cocok dengan 'name' option di komponen .vue
+const cachedViews = ['DashboardHomeView', 'TambahBukuView']
+
 const navItems = [
   { name: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { name: 'tambah-buku', label: 'Tambah Buku', icon: BookOpen },
   { name: 'kelola-anggota', label: 'Kelola Anggota', icon: Users },
   { name: 'peminjaman', label: 'Peminjaman', icon: BookMarked },
   { name: 'laporan', label: 'Laporan', icon: BarChart3 },
-].filter(item => router.hasRoute(item.name))
+].filter((item) => router.hasRoute(item.name))
 </script>
