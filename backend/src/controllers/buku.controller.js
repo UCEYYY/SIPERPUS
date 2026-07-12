@@ -74,7 +74,7 @@ async function create(req, res, next) {
     const [result] = await pool.execute(
       `INSERT INTO buku(judul, penulis, penerbit, tahun, isbn, kategori, sinopsis, stok, tersedia)
        VALUES(?,?,?,?,?,?,?,?,?)`,
-      [judul, penulis, penerbit, tahun, isbn, kategori, sinopsis, stok, stok],
+      [judul, penulis, penerbit ?? null, tahun ?? null, isbn ?? null, kategori ?? null, sinopsis ?? null, stok, stok],
     )
     const [newBuku] = await pool.execute('SELECT * FROM buku WHERE id = ?', [result.insertId])
     res.status(201).json({
@@ -97,7 +97,7 @@ async function update(req, res, next) {
     await pool.execute(
       `UPDATE buku SET judul=?, penulis=?, penerbit=?, tahun=?, isbn=?,
        kategori=?, sinopsis=?, stok=? WHERE id=?`,
-      [judul, penulis, penerbit, tahun, isbn, kategori, sinopsis, stok, req.params.id],
+      [judul, penulis, penerbit ?? null, tahun ?? null, isbn ?? null, kategori ?? null, sinopsis ?? null, stok, req.params.id],
     )
     const [updated] = await pool.execute('SELECT * FROM buku WHERE id = ?', [req.params.id])
     res.json({ success: true, message: 'Buku berhasil diperbarui', data: updated[0] })

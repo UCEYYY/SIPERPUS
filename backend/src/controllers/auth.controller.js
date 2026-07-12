@@ -55,7 +55,7 @@ async function register(req, res, next) {
       );
       await conn.execute(
         'INSERT INTO anggota(user_id, nim, program_studi) VALUES(?,?,?)',
-        [userResult.insertId, nim, programStudi]
+        [userResult.insertId, nim ?? null, programStudi ?? null]
       );
       await conn.commit();
       conn.release();
