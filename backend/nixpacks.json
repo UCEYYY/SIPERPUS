@@ -1,0 +1,6 @@
+{
+  "$schema": "https://nixpacks.dev/schema.json",
+  "start": {
+    "cmd": "node server.js"
+  }
+}

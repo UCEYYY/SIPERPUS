@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 3306,
+  port: parseInt(process.env.DB_PORT, 10) || 3306,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'siperpus',
@@ -12,15 +12,14 @@ const pool = mysql.createPool({
   timezone: '+07:00'
 });
 
-// Test koneksi saat startup
 pool.getConnection()
   .then(conn => {
     console.log('✅ Terhubung ke database MariaDB');
     conn.release();
   })
   .catch(err => {
-    console.error('❌ Gagal terhubung ke database:', err.message);
-    process.exit(1);
+    console.error('⚠️ Database belum siap:', err.message);
+    console.error('⚠️ Mencoba koneksi lagi saat ada request...');
   });
 
 module.exports = pool;
