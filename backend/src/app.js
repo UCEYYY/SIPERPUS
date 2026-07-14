@@ -114,6 +114,13 @@ app.get('/api/import-db', async (req, res) => {
       multipleStatements: true,
     })
 
+    await conn.query('SET FOREIGN_KEY_CHECKS = 0')
+    await conn.query('DROP TABLE IF EXISTS peminjaman')
+    await conn.query('DROP TABLE IF EXISTS anggota')
+    await conn.query('DROP TABLE IF EXISTS buku')
+    await conn.query('DROP TABLE IF EXISTS users')
+    await conn.query('SET FOREIGN_KEY_CHECKS = 1')
+
     await conn.query(sql)
     await conn.end()
 
