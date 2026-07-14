@@ -87,6 +87,18 @@ const fs = require('fs')
 const path = require('path')
 const mysql = require('mysql2/promise')
 
+// DEBUG: lihat variabel (HAPUS SETELAH SELESAI)
+app.get('/api/debug-env', (req, res) => {
+  res.json({
+    DB_HOST: process.env.DB_HOST || 'KOSONG',
+    DB_PORT: process.env.DB_PORT || 'KOSONG',
+    DB_USER: process.env.DB_USER || 'KOSONG',
+    DB_PASSWORD: process.env.DB_PASSWORD ? 'ADA (tersembunyi)' : 'KOSONG',
+    DB_NAME: process.env.DB_NAME || 'KOSONG',
+    NODE_ENV: process.env.NODE_ENV || 'KOSONG',
+  })
+})
+
 app.get('/api/import-db', async (req, res) => {
   try {
     const sqlPath = path.join(__dirname, '../database/siperpus.sql')
