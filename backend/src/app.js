@@ -82,6 +82,35 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
+// TEMPORARY: Import database - HAPUS SETELAH SELESAI
+const fs = require('fs')
+const path = require('path')
+const mysql = require('mysql2/promise')
+
+app.get('/api/import-db', async (req, res) => {
+  try {
+    const sqlPath = path.join(__dirname, '../database/siperpus.sql')
+    if (!fs.existsSync(sqlPath)) return res.status(404).json({ error: 'File siperpus.sql tidak ditemukan' })
+
+    const sql = fs.readFileSync(sqlPath, 'utf8')
+    const conn = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT, 10) || 3306,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      multipleStatements: true,
+    })
+
+    await conn.query(sql)
+    await conn.end()
+
+    res.json({ success: true, message: 'Import database berhasil!' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Endpoint tidak ditemukan' })
