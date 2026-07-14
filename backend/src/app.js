@@ -120,8 +120,14 @@ app.get('/api/import-db', async (req, res) => {
     await conn.query('DROP TABLE IF EXISTS buku')
     await conn.query('DROP TABLE IF EXISTS users')
     await conn.query('SET FOREIGN_KEY_CHECKS = 1')
+    console.log('Tables dropped, importing SQL...')
 
-    await conn.query(sql)
+    const cleanedSql = sql
+      .replace(/\/\*!40101.*?\*\//g, '')
+      .replace(/START TRANSACTION;/g, '')
+      .replace(/COMMIT;/g, '')
+    await conn.query(cleanedSql)
+    console.log('Import selesai')
     await conn.end()
 
     res.json({ success: true, message: 'Import database berhasil!' })
