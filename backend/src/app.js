@@ -90,11 +90,11 @@ const mysql = require('mysql2/promise')
 // DEBUG: lihat variabel (HAPUS SETELAH SELESAI)
 app.get('/api/debug-env', (req, res) => {
   res.json({
-    DB_HOST: process.env.DB_HOST || 'KOSONG',
-    DB_PORT: process.env.DB_PORT || 'KOSONG',
-    DB_USER: process.env.DB_USER || 'KOSONG',
-    DB_PASSWORD: process.env.DB_PASSWORD ? 'ADA (tersembunyi)' : 'KOSONG',
-    DB_NAME: process.env.DB_NAME || 'KOSONG',
+    DB_HOST: process.env.DB_HOST || process.env.MYSQLHOST || 'KOSONG',
+    DB_PORT: process.env.DB_PORT || process.env.MYSQLPORT || 'KOSONG',
+    DB_USER: process.env.DB_USER || process.env.MYSQLUSER || 'KOSONG',
+    DB_PASSWORD: (process.env.DB_PASSWORD || process.env.MYSQLPASSWORD) ? 'ADA' : 'KOSONG',
+    DB_NAME: process.env.DB_NAME || process.env.MYSQLDATABASE || 'KOSONG',
     NODE_ENV: process.env.NODE_ENV || 'KOSONG',
   })
 })
@@ -106,11 +106,11 @@ app.get('/api/import-db', async (req, res) => {
 
     const sql = fs.readFileSync(sqlPath, 'utf8')
     const conn = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT, 10) || 3306,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: process.env.DB_HOST || process.env.MYSQLHOST,
+      port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT, 10) || 3306,
+      user: process.env.DB_USER || process.env.MYSQLUSER,
+      password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD,
+      database: process.env.DB_NAME || process.env.MYSQLDATABASE,
       multipleStatements: true,
     })
 

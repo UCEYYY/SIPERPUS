@@ -9,11 +9,11 @@ const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 async function migrate() {
   const conn = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10) || 3306,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: process.env.DB_HOST || process.env.MYSQLHOST,
+    port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT, 10) || 3306,
+    user: process.env.DB_USER || process.env.MYSQLUSER,
+    password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD,
+    database: process.env.DB_NAME || process.env.MYSQLDATABASE,
     multipleStatements: true,
   });
 
